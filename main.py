@@ -3,7 +3,10 @@ from yolov5 import predict
 
 logging.disable(logging.CRITICAL)
 
+weights_path = "yolov5/yolov5x6.pt"
+
 def set_logging(value=False):
     logging.disable(logging.NOTSET if value else logging.CRITICAL)
 
-predict(weights="yolov5/yolov5x6.pt", image="")
+def direct_prediction(image):
+    return predict(weights=weights_path, image=image, only_labels=True)

@@ -50,6 +50,8 @@ def predict(weights=ROOT / 'yolov5s.pt',  # model.pt path(s)
         hide_conf=False,  # hide confidences
         half=False,  # use FP16 half-precision inference
         dnn=False,  # use OpenCV DNN for ONNX inference
+        only_labels=False, # only return the labels
+        show_results=False, # show predicted result
         ):
     image = str(image)
     save_img = not nosave and not image.endswith('.txt')  # save inference images
@@ -132,9 +134,11 @@ def predict(weights=ROOT / 'yolov5s.pt',  # model.pt path(s)
                 det[:, :4] = scale_coords(im.shape[2:], det[:, :4], im0.shape).round()
 
                 # Print results
+                labels = []
                 for c in det[:, -1].unique():
                     n = (det[:, -1] == c).sum()  # detections per class
                     s += f"{n} {names[int(c)]}{'s' * (n > 1)}, "  # add to string
+                    labels.append(names[int(c)])
 
                 # Write results
                 for *xyxy, conf, cls in reversed(det):
@@ -156,11 +160,15 @@ def predict(weights=ROOT / 'yolov5s.pt',  # model.pt path(s)
 
             # Stream results
             im0 = annotator.result()
-            cv2.imshow("Image", im0)
-            cv2.waitKey(0)
+            if show_results:
+                cv2.imshow("Image", im0)
+                cv2.waitKey(0)
 
     # Print results
     t = tuple(x / seen * 1E3 for x in dt)  # speeds per image
     LOGGER.info(f'Speed: %.1fms pre-process, %.1fms inference, %.1fms NMS per image at shape {(1, 3, *imgsz)}' % t)
     if update:
         strip_optimizer(weights)  # update model (to fix imageChangeWarning)
+
+    if only_labels:
+        return labels
