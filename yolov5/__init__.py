@@ -1,1 +1,1 @@
-from yolov5 import predict
+from .yolov5 import predict

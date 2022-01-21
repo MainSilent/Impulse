@@ -274,43 +274,6 @@ def check_version(current='0.0.0', minimum='0.0.0', name='version ', pinned=Fals
     return result
 
 
-@try_except
-def check_requirements(requirements=ROOT / 'requirements.txt', exclude=(), install=True):
-    # Check installed dependencies meet requirements (pass *.txt file or list of packages)
-    prefix = colorstr('red', 'bold', 'requirements:')
-    check_python()  # check python version
-    if isinstance(requirements, (str, Path)):  # requirements.txt file
-        file = Path(requirements)
-        assert file.exists(), f"{prefix} {file.resolve()} not found, check failed."
-        with file.open() as f:
-            requirements = [f'{x.name}{x.specifier}' for x in pkg.parse_requirements(f) if x.name not in exclude]
-    else:  # list or tuple of packages
-        requirements = [x for x in requirements if x not in exclude]
-
-    n = 0  # number of packages updates
-    for r in requirements:
-        try:
-            pkg.require(r)
-        except Exception as e:  # DistributionNotFound or VersionConflict if requirements not met
-            s = f"{prefix} {r} not found and is required by YOLOv5"
-            if install:
-                print(f"{s}, attempting auto-update...")
-                try:
-                    assert check_online(), f"'pip install {r}' skipped (offline)"
-                    print(check_output(f"pip install '{r}'", shell=True).decode())
-                    n += 1
-                except Exception as e:
-                    print(f'{prefix} {e}')
-            else:
-                print(f'{s}. Please install and rerun your command.')
-
-    if n:  # if packages updated
-        source = file.resolve() if 'file' in locals() else requirements
-        s = f"{prefix} {n} package{'s' * (n > 1)} updated per {source}\n" \
-            f"{prefix} ⚠️ {colorstr('bold', 'Restart runtime or rerun command for updates to take effect')}\n"
-        print(emojis(s))
-
-
 def check_img_size(imgsz, s=32, floor=0):
     # Verify image size is a multiple of stride s in each dimension
     if isinstance(imgsz, int):  # integer i.e. img_size=640
