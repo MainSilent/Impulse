@@ -19,15 +19,15 @@ If the requested label is not in the trained model the library will ReAdd the ca
     </tr>
     <tr>
         <td>Airplane | Seaplane</td>
-        <td>❌</td>
+        <td>✅</td>
     </tr>
     <tr>
         <td>Bus</td>
-        <td>❌</td>
+        <td>✅</td>
     </tr>
     <tr>
         <td>Boat</td>
-        <td>❌</td>
+        <td>✅</td>
     </tr>
     <tr>
         <td>Bridge</td>
@@ -35,11 +35,11 @@ If the requested label is not in the trained model the library will ReAdd the ca
     </tr>
     <tr>
         <td>Bicycle</td>
-        <td>❌</td>
+        <td>✅</td>
     </tr>
     <tr>
         <td>Car</td>
-        <td>❌</td>
+        <td>✅</td>
     </tr>
     <tr>
         <td>Chimneys</td>
@@ -51,7 +51,7 @@ If the requested label is not in the trained model the library will ReAdd the ca
     </tr>
     <tr>
         <td>Fire hydrants</td>
-        <td>❌</td>
+        <td>✅</td>
     </tr>
     <tr>
         <td>Mountain | Hill</td>
@@ -59,7 +59,7 @@ If the requested label is not in the trained model the library will ReAdd the ca
     </tr>
     <tr>
         <td>Motorcycle</td>
-        <td>❌</td>
+        <td>✅</td>
     </tr>
     <tr>
         <td>Palm tree</td>
@@ -75,11 +75,11 @@ If the requested label is not in the trained model the library will ReAdd the ca
     </tr>
     <tr>
         <td>Train</td>
-        <td>❌</td>
+        <td>✅</td>
     </tr>
     <tr>
         <td>Truck</td>
-        <td>❌</td>
+        <td>✅</td>
     </tr>
     <tr>
         <td>Tractor</td>
@@ -87,6 +87,6 @@ If the requested label is not in the trained model the library will ReAdd the ca
     </tr>
     <tr>
         <td>Traffic lights</td>
-        <td>❌</td>
+        <td>✅</td>
     </tr>
 </table>
