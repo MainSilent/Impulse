@@ -4,6 +4,7 @@ Download utils
 """
 
 import os
+import wget
 import platform
 import subprocess
 import time
@@ -32,7 +33,7 @@ def safe_download(file, url, url2=None, min_bytes=1E0, error_msg=''):
     except Exception as e:  # url2
         file.unlink(missing_ok=True)  # remove partial downloads
         print(f'ERROR: {e}\nRe-attempting {url2 or url} to {file}...')
-        os.system(f"curl -L '{url2 or url}' -o '{file}' --retry 3 -C -")  # curl download, retry and resume on fail
+        wget.download(url, str(file))
     finally:
         if not file.exists() or file.stat().st_size < min_bytes:  # check
             file.unlink(missing_ok=True)  # remove partial downloads
