@@ -1,5 +1,6 @@
 import os
 import re
+import time
 from yolov5 import predict
 from confusables import normalize
 from selenium.webdriver.common.by import By
@@ -44,15 +45,28 @@ class Solver():
             EC.presence_of_element_located((By.CSS_SELECTOR, 'iframe[src *= "hcaptcha-challenge.html"]'))
         )
         self.driver.switch_to.frame(iframe)
-        raw_label = WebDriverWait(self.driver, self.timeout).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, '.prompt-text'))
-        ).text
 
-        raw_label = normalize(raw_label, prioritize_alpha=True)[0].lower()
+        while True:
+            raw_label = WebDriverWait(self.driver, self.timeout).until(
+                EC.presence_of_element_located((By.CSS_SELECTOR, '.prompt-text'))
+            ).text
 
-        for label in labels:
-            if label in raw_label:
-                print(label)
+            raw_label = normalize(raw_label, prioritize_alpha=True)[0].lower()
+        
+            for label in labels:
+                if label in raw_label:
+                    self.label = label
+                    break
+            
+            # If the label is not in available classes, reload
+            if self.label:
+                break
+            else:
+                WebDriverWait(self.driver, self.timeout).until(
+                    EC.presence_of_element_located((By.CSS_SELECTOR, '.refresh.button'))
+                ).click()
+                time.sleep(2)
+                    
 
     def recaptcha(self):
         ...
