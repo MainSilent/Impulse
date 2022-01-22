@@ -14,6 +14,9 @@ labels = [
     'train', 'truck', 'boat', 'traffic light', 'fire hydrant'
 ]
 
+def direct_prediction(image):
+    return predict(weights=weights_path, image=image, only_labels=True)
+
 class Solver():
     timeout = 10
     driver = None
@@ -66,7 +69,23 @@ class Solver():
                     EC.presence_of_element_located((By.CSS_SELECTOR, '.refresh.button'))
                 ).click()
                 time.sleep(2)
-                    
+            
+        # Get Images
+        src = ""
+        while True:
+            images = WebDriverWait(self.driver, self.timeout).until(
+                EC.presence_of_all_elements_located((By.CSS_SELECTOR, '.task-image .image'))
+            )
+            
+            for image in images:
+                src = image.value_of_css_property('background-image')[5:-2]
+                print(src)
+
+                if not src:
+                    break
+            
+            if src:
+                break
 
     def recaptcha(self):
         ...
