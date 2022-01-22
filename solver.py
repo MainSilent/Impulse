@@ -86,6 +86,7 @@ class Solver():
             if not loaded:
                 continue
 
+            # Predict images
             for index, image in enumerate(images):
                 src = get_src(image)
                 result = direct_prediction(src)
@@ -93,7 +94,10 @@ class Solver():
                 if self.label in result:
                     self.driver.execute_script(f"document.querySelectorAll('.task-image .image')[{index}].click()")
 
-            break
+            self.driver.find_element(By.CSS_SELECTOR, '.button-submit.button').click()
+            if not self.driver.find_element(By.CSS_SELECTOR, '.task-image .image'):
+                self.driver.switch_to.default_content()
+                break
 
     def recaptcha(self):
         ...
