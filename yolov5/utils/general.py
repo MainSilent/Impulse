@@ -316,14 +316,17 @@ def check_yaml(file, suffix=('.yaml', '.yml')):
     return check_file(file, suffix)
 
 
-def check_file(file, suffix=''):
+def check_file(file, suffix='', add_suffix=False):
     # Search/download file (if necessary) and return path
     check_suffix(file, suffix)  # optional
     file = str(file)  # convert to str()
+    file += "" if not add_suffix else ".png"
     if Path(file).is_file() or file == '':  # exists
         return file
     elif file.startswith(('http:/', 'https:/')):  # download
         url = str(Path(file)).replace(':/', '://')  # Pathlib turns :// -> :/
+        if add_suffix:
+            url = url[:-4]
         file = Path(urllib.parse.unquote(file).split('?')[0]).name  # '%2F' to '/', split https://url.com/file.txt?auth
         if Path(file).is_file():
             print(f'Found {url} locally at {file}')  # file already exists

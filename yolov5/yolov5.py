@@ -57,9 +57,10 @@ def predict(weights=ROOT / 'yolov5s.pt',  # model.pt path(s)
     save_img = not nosave and not image.endswith('.txt')  # save inference images
     is_file = Path(image).suffix[1:] in (IMG_FORMATS + VID_FORMATS)
     is_url = image.lower().startswith(('rtsp://', 'rtmp://', 'http://', 'https://'))
-    webcam = image.isnumeric() or image.endswith('.txt') or (is_url and not is_file)
-    if is_url and is_file:
-        image = check_file(image)  # download
+    # webcam = image.isnumeric() or image.endswith('.txt') or (is_url)
+    webcam = False
+    if is_url:
+        image = check_file(image, add_suffix=True if not is_file else False)  # download
 
     # Directories
     # save_dir = increment_path(Path(project) / name, exist_ok=exist_ok)  # increment run
@@ -169,6 +170,8 @@ def predict(weights=ROOT / 'yolov5s.pt',  # model.pt path(s)
     LOGGER.info(f'Speed: %.1fms pre-process, %.1fms inference, %.1fms NMS per image at shape {(1, 3, *imgsz)}' % t)
     if update:
         strip_optimizer(weights)  # update model (to fix imageChangeWarning)
+
+    os.unlink(image)
 
     if only_labels:
         return labels
