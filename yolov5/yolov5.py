@@ -9,6 +9,7 @@ import cv2
 import torch
 import torch.backends.cudnn as cudnn
 
+model = None
 FILE = Path(__file__).resolve()
 ROOT = FILE.parents[0]  # YOLOv5 root directory
 if str(ROOT) not in sys.path:
@@ -53,6 +54,7 @@ def predict(weights=ROOT / 'yolov5s.pt',  # model.pt path(s)
         only_labels=False, # only return the labels
         show_results=False, # show predicted result
         ):
+    global model
     labels = []
     image = str(image)
     save_img = not nosave and not image.endswith('.txt')  # save inference images
@@ -69,7 +71,8 @@ def predict(weights=ROOT / 'yolov5s.pt',  # model.pt path(s)
 
     # Load model
     device = select_device(device)
-    model = DetectMultiBackend(weights, device=device, dnn=dnn, data=data)
+    if not model:
+        model = DetectMultiBackend(weights, device=device, dnn=dnn, data=data)
     stride, names, pt, jit, onnx, engine = model.stride, model.names, model.pt, model.jit, model.onnx, model.engine
     imgsz = check_img_size(imgsz, s=stride)  # check image size
 
