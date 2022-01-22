@@ -3,6 +3,7 @@ import time
 import json
 import gzip
 import logging
+from solver import Solver
 from seleniumwire.webdriver import ChromeOptions
 from seleniumwire.undetected_chromedriver import Chrome
 
@@ -69,16 +70,9 @@ def new(_host, sitekey, chromedriver_path="/bin/chromedriver", headless=True):
     '''
     driver.get(f"data:text/html;charset=utf-8,{page_content}")
 
-    log.info("Waiting for checkbox...")
-    while True:
-        try:
-            driver.switch_to.frame(0)
-            driver.find_element_by_id("checkbox").click()
-            log.info("Checkbox clicked")
-            break
-        except Exception as e:
-            driver.switch_to.default_content()
-            time.sleep(0.2)
+    log.info("Waiting for solver...")
+    solver = Solver(driver, type="hcaptcha")
+    solver.run()
 
     log.info("Waiting for key...")
     while True:

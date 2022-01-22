@@ -1,6 +1,8 @@
 import os
 import logging
+import indirect
 from yolov5 import predict
+from solver import Solver
 
 logging.disable(logging.CRITICAL)
 
