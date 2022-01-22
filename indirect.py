@@ -71,7 +71,7 @@ def new(_host, sitekey, chromedriver_path="/bin/chromedriver", headless=True):
     driver.get(f"data:text/html;charset=utf-8,{page_content}")
 
     log.info("Waiting for solver...")
-    solver = Solver(driver, type="hcaptcha")
+    solver = Solver(driver, _type="hcaptcha")
     solver.run()
 
     log.info("Waiting for key...")
