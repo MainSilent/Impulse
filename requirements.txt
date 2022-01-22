@@ -38,3 +38,4 @@ thop  # FLOPs computation
 selenium
 selenium_wire==4.6.0
 wget==3.2
+confusables==1.2.0
