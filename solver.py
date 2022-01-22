@@ -95,8 +95,15 @@ class Solver():
                     self.driver.execute_script(f"document.querySelectorAll('.task-image .image')[{index}].click()")
 
             self.driver.find_element(By.CSS_SELECTOR, '.button-submit.button').click()
-            if not self.driver.find_element(By.CSS_SELECTOR, '.task-image .image'):
-                self.driver.switch_to.default_content()
+
+            # When submitting it stays at the frame and if it has been successful it will continue and cause exception
+            time.sleep(4)            
+
+            try:
+                if not self.driver.find_element(By.CSS_SELECTOR, '.task-image .image'):
+                    self.driver.switch_to.default_content()
+                    break
+            except:
                 break
 
     def recaptcha(self):
