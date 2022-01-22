@@ -71,21 +71,29 @@ class Solver():
                 time.sleep(2)
             
         # Get Images
-        src = ""
+        get_src = lambda i: i.value_of_css_property('background-image')[5:-2]
+
         while True:
             images = WebDriverWait(self.driver, self.timeout).until(
                 EC.presence_of_all_elements_located((By.CSS_SELECTOR, '.task-image .image'))
             )
             
-            for image in images:
-                src = image.value_of_css_property('background-image')[5:-2]
-                print(src)
-
-                if not src:
-                    break
+            # Wait for all images to be loaded
+            loaded = all([
+                get_src(image) for image in images
+            ])
             
-            if src:
-                break
+            if not loaded:
+                continue
+
+            for index, image in enumerate(images):
+                src = get_src(image)
+                result = direct_prediction(src)
+
+                if self.label in result:
+                    self.driver.execute_script(f"document.querySelectorAll('.task-image .image')[{index}].click()")
+
+            break
 
     def recaptcha(self):
         ...
