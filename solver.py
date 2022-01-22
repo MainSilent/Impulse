@@ -36,7 +36,31 @@ class Solver():
         else:
             self.solve_hcaptcha()
 
+    def get_hcaptcha_label(self):
+        while True:
+            raw_label = WebDriverWait(self.driver, self.timeout).until(
+                EC.presence_of_element_located((By.CSS_SELECTOR, '.prompt-text'))
+            ).text
+
+            raw_label = normalize(raw_label, prioritize_alpha=True)[0].lower()
+        
+            for label in labels:
+                if label in raw_label:
+                    self.label = label
+                    break
+            
+            # If the label is not in available classes, reload
+            if self.label:
+                print('Challenge label: ' + self.label)
+                break
+            else:
+                WebDriverWait(self.driver, self.timeout).until(
+                    EC.presence_of_element_located((By.CSS_SELECTOR, '.refresh.button'))
+                ).click()
+                time.sleep(2)
+
     def solve_hcaptcha(self):
+        self.label = ""
         iframe = WebDriverWait(self.driver, self.timeout).until(
             EC.presence_of_element_located((By.CSS_SELECTOR, '.h-captcha iframe'))
         )
@@ -57,27 +81,7 @@ class Solver():
         )
         self.driver.switch_to.frame(iframe)
 
-        while True:
-            raw_label = WebDriverWait(self.driver, self.timeout).until(
-                EC.presence_of_element_located((By.CSS_SELECTOR, '.prompt-text'))
-            ).text
-
-            raw_label = normalize(raw_label, prioritize_alpha=True)[0].lower()
-        
-            for label in labels:
-                if label in raw_label:
-                    self.label = label
-                    break
-            
-            # If the label is not in available classes, reload
-            if self.label:
-                break
-            else:
-                WebDriverWait(self.driver, self.timeout).until(
-                    EC.presence_of_element_located((By.CSS_SELECTOR, '.refresh.button'))
-                ).click()
-                time.sleep(2)
-        log.info('Challenge label: ' + self.label)
+        self.get_hcaptcha_label()
 
         # Get Images
         get_src = lambda i: i.value_of_css_property('background-image')[5:-2]
@@ -110,8 +114,15 @@ class Solver():
             self.driver.find_element(By.CSS_SELECTOR, '.button-submit.button').click()
 
             # When submitting it stays at the frame and if it has been successful it will continue and cause exception
-            time.sleep(4)   
+            time.sleep(4)
 
+            # Fix a bug when label changed
+            try:
+                self.get_hcaptcha_label()
+            except:
+                pass
+            
+            # break if Challenge is solved
             try:
                 if not self.driver.find_element(By.CSS_SELECTOR, '.task-image .image'):
                     self.driver.switch_to.default_content()
