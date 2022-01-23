@@ -2,6 +2,10 @@
 
 Bypass hCaptcha with Vision AI using yolov5
 
+```
+pip install Captcha-Impulse
+```
+
 ## Available labels
 
 If the requested label is not in the trained model the library will reload the captcha until it find an available label.

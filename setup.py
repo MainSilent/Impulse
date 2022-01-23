@@ -8,7 +8,7 @@ with open('requirements.txt') as f:
     required = f.read().splitlines()
 
 setuptools.setup(
-    name="Impulse",
+    name="Captcha-Impulse",
     version="0.0.1",
     author="MainSilent",
     description="hCaptcha bypass with yolov5",
