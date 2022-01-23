@@ -14,7 +14,6 @@ setuptools.setup(
     description="hCaptcha bypass with yolov5",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    keywords=['mail', 'email', 'temporary mail', 'temporary email', 'mailtm'],
     url="https://github.com/MainSilent/Impulse",
     project_urls={
         "Bug Tracker": "https://github.com/MainSilent/Impulse/issues",
