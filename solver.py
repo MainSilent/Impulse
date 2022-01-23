@@ -54,14 +54,16 @@ class Solver():
         self.driver.switch_to.default_content()
         log.info('Checkbox clicked')
 
-    def get_hcaptcha_label(self):
+    def get_label(self):
         while True:
             raw_label = WebDriverWait(self.driver, self.timeout).until(
-                EC.presence_of_element_located((By.CSS_SELECTOR, '.prompt-text'))
+                EC.presence_of_element_located(
+                    (By.CSS_SELECTOR, '.prompt-text' if self.type == 'h' else '.rc-imageselect-instructions')
+                )
             ).text
 
             raw_label = normalize(raw_label, prioritize_alpha=True)[0].lower()
-        
+
             for label in labels:
                 if label in raw_label:
                     self.label = label
@@ -73,7 +75,9 @@ class Solver():
                 break
             else:
                 WebDriverWait(self.driver, self.timeout).until(
-                    EC.presence_of_element_located((By.CSS_SELECTOR, '.refresh.button'))
+                    EC.presence_of_element_located(
+                        (By.CSS_SELECTOR, '.refresh.button' if self.type == 'h' else '#recaptcha-reload-button')
+                    )
                 ).click()
                 time.sleep(2)
 
@@ -89,7 +93,7 @@ class Solver():
         )
         self.driver.switch_to.frame(iframe)
 
-        self.get_hcaptcha_label()
+        self.get_label()
 
         # Get Images
         get_src = lambda i: i.value_of_css_property('background-image')[5:-2]
@@ -126,7 +130,7 @@ class Solver():
 
             # Fix a bug when label changed
             try:
-                self.get_hcaptcha_label()
+                self.get_label()
             except:
                 pass
             
@@ -143,3 +147,14 @@ class Solver():
         self.label = ""
 
         self.click_checkbox()
+
+        # Get challenge label
+        log.info('Getting challenge label')
+        iframe = WebDriverWait(self.driver, self.timeout).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, 'iframe[src *= "recaptcha/api2/bframe"]'))
+        )
+        self.driver.switch_to.frame(iframe)
+
+        self.get_label()
+        print(self.label)
+
