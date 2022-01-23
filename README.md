@@ -6,6 +6,14 @@ Bypass hCaptcha with Vision AI using yolov5
 pip install Captcha-Impulse
 ```
 
+## Demo
+
+### First try
+![demo 1](https://github.com/MainSilent/Impulse/raw/master/demo/demo.gif)
+
+### Second try
+![demo 2](https://github.com/MainSilent/Impulse/raw/master/demo/demo2.gif)
+
 ## Available labels
 
 If the requested label is not in the trained model the library will reload the captcha until it find an available label.
