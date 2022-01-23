@@ -12,8 +12,12 @@ If the requested label is not in the trained model the library will reload the c
         <th>Status</th>
     </tr>
     <tr>
-        <td>Airplane | Seaplane</td>
+        <td>Airplane</td>
         <td>✅</td>
+    </tr>
+    <tr>
+        <td>Seaplane</td>
+        <td>❌</td>
     </tr>
     <tr>
         <td>Bus</td>
@@ -84,6 +88,19 @@ If the requested label is not in the trained model the library will reload the c
         <td>✅</td>
     </tr>
 </table>
+
+## Example
+
+```python
+from impulse import Solver
+from selenium import webdriver
+
+if __name__ == '__main__':
+    driver = webdriver.Chrome()
+    driver.get("https://www.google.com/recaptcha/api2/demo")
+    solver = Solver(driver)
+    solver.run()
+```
 
 ## Todo
 
