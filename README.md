@@ -1,16 +1,10 @@
 # Captcha Impulse
 
-Bypass ReCaptcha and hCaptcha with Vision AI using yolov5
-
-## How does it work?
-
-Base on my last research both captchas use 19 classes, By using Vision AI we are able to bypass the captchas with an acceptable probability.
-
-I have plan on training the model on a custom dataset for more labels but this task needs many hours of preprocessing and training, Currently we are using pre trained models.
-
-If the requested label is not in the trained model the library will ReAdd the captcha until it find an available label.
+Bypass hCaptcha with Vision AI using yolov5
 
 ## Available labels
+
+If the requested label is not in the trained model the library will reload the captcha until it find an available label.
 
 <table>
     <tr>
@@ -90,3 +84,7 @@ If the requested label is not in the trained model the library will ReAdd the ca
         <td>✅</td>
     </tr>
 </table>
+
+## Todo
+
+1- Add ReCaptcha

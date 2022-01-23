@@ -26,15 +26,16 @@ class Solver():
     timeout = 10
     driver = None
     
-    def __init__(self, driver, _type='recaptcha'):
-        self.type = 'r' if _type == 'recaptcha' else 'h'
+    def __init__(self, driver):
+        # self.type = 'r' if _type == 'recaptcha' else 'h'
         self.driver = driver
 
     def run(self):
-        if self.type == 'r':
-            self.solve_recaptcha()
-        else:
-            self.solve_hcaptcha()
+        self.type = 'h'
+        # if self.type == 'r':
+        #     self.solve_recaptcha()
+        # else:
+        #     self.solve_hcaptcha()
 
     def click_checkbox(self):
         iframe = WebDriverWait(self.driver, self.timeout).until(
@@ -143,18 +144,18 @@ class Solver():
                 self.driver.switch_to.default_content()
                 break
 
-    def solve_recaptcha(self):
-        self.label = ""
+    # def solve_recaptcha(self):
+    #     self.label = ""
 
-        self.click_checkbox()
+    #     self.click_checkbox()
 
-        # Get challenge label
-        log.info('Getting challenge label')
-        iframe = WebDriverWait(self.driver, self.timeout).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, 'iframe[src *= "recaptcha/api2/bframe"]'))
-        )
-        self.driver.switch_to.frame(iframe)
+    #     # Get challenge label
+    #     log.info('Getting challenge label')
+    #     iframe = WebDriverWait(self.driver, self.timeout).until(
+    #         EC.presence_of_element_located((By.CSS_SELECTOR, 'iframe[src *= "recaptcha/api2/bframe"]'))
+    #     )
+    #     self.driver.switch_to.frame(iframe)
 
-        self.get_label()
-        print(self.label)
+    #     self.get_label()
+    #     print(self.label)
 
