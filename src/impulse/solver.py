@@ -41,7 +41,7 @@ class Solver():
     def click_checkbox(self):
         iframe = WebDriverWait(self.driver, self.timeout).until(
             EC.presence_of_element_located(
-                (By.CSS_SELECTOR, '.h-captcha iframe' if self.type == 'h' else '.g-recaptcha iframe')
+                (By.CSS_SELECTOR, 'iframe[src *= "hcaptcha-checkbox.html"]' if self.type == 'h' else '.g-recaptcha iframe')
             )
         )
 
