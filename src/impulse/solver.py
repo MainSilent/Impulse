@@ -2,7 +2,7 @@ import os
 import re
 import time
 import logging
-from yolov5 import predict
+from .yolov5 import predict
 from confusables import normalize
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -32,6 +32,7 @@ class Solver():
 
     def run(self):
         self.type = 'h'
+        self.solve_hcaptcha()
         # if self.type == 'r':
         #     self.solve_recaptcha()
         # else:

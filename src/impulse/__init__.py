@@ -1,7 +1,6 @@
 import logging
 # import indirect
-from yolov5 import predict
-from solver import Solver, direct_prediction
+from .solver import Solver, direct_prediction
 
 logging.disable(logging.CRITICAL)
 
