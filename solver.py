@@ -27,14 +27,32 @@ class Solver():
     driver = None
     
     def __init__(self, driver, _type='recaptcha'):
-        self.type = _type
+        self.type = 'r' if _type == 'recaptcha' else 'h'
         self.driver = driver
 
     def run(self):
-        if self.type == 'recaptcha':
+        if self.type == 'r':
             self.solve_recaptcha()
         else:
             self.solve_hcaptcha()
+
+    def click_checkbox(self):
+        iframe = WebDriverWait(self.driver, self.timeout).until(
+            EC.presence_of_element_located(
+                (By.CSS_SELECTOR, '.h-captcha iframe' if self.type == 'h' else '.g-recaptcha iframe')
+            )
+        )
+
+        log.info('Clicking on check box')
+        self.driver.switch_to.frame(iframe)
+
+        WebDriverWait(self.driver, self.timeout).until(
+            EC.presence_of_element_located(
+                (By.CSS_SELECTOR, '#checkbox' if self.type == 'h' else '.recaptcha-checkbox')
+            )
+        ).click()
+        self.driver.switch_to.default_content()
+        log.info('Checkbox clicked')
 
     def get_hcaptcha_label(self):
         while True:
@@ -61,18 +79,8 @@ class Solver():
 
     def solve_hcaptcha(self):
         self.label = ""
-        iframe = WebDriverWait(self.driver, self.timeout).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, '.h-captcha iframe'))
-        )
 
-        # Click on check box
-        log.info('Clicking on check box')
-        self.driver.switch_to.frame(iframe)
-        WebDriverWait(self.driver, self.timeout).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, '#checkbox'))
-        ).click()
-        self.driver.switch_to.default_content()
-        log.info('Checkbox clicked')
+        self.click_checkbox()
 
         # Get challenge label
         log.info('Getting challenge label')
@@ -131,5 +139,7 @@ class Solver():
                 self.driver.switch_to.default_content()
                 break
 
-    def recaptcha(self):
-        ...
+    def solve_recaptcha(self):
+        self.label = ""
+
+        self.click_checkbox()
