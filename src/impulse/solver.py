@@ -41,7 +41,7 @@ class Solver():
     def click_checkbox(self):
         iframe = WebDriverWait(self.driver, self.timeout).until(
             EC.presence_of_element_located(
-                (By.CSS_SELECTOR, 'iframe[src *= "hcaptcha-checkbox.html"]' if self.type == 'h' else '.g-recaptcha iframe')
+                (By.CSS_SELECTOR, 'iframe[src *= "frame=checkbox"]' if self.type == 'h' else '.g-recaptcha iframe')
             )
         )
 
@@ -91,7 +91,7 @@ class Solver():
         # Get challenge label
         log.info('Getting challenge label')
         iframe = WebDriverWait(self.driver, self.timeout).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, 'iframe[src *= "hcaptcha-challenge.html"]'))
+            EC.presence_of_element_located((By.CSS_SELECTOR, 'iframe[src *= "frame=challenge"]'))
         )
         self.driver.switch_to.frame(iframe)
 

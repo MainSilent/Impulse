@@ -9,7 +9,7 @@ with open('requirements.txt') as f:
 
 setuptools.setup(
     name="Captcha-Impulse",
-    version="0.0.2",
+    version="0.0.9",
     author="MainSilent",
     description="hCaptcha bypass with yolov5",
     long_description=long_description,
